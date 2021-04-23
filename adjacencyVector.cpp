@@ -181,8 +181,8 @@ vector<int> adjacencyVector::bfsCC(int root, vector<int> &discovered, int consta
     return components;
 }
 
-bool compareCC(vector<int> primeiro, vector<int> segundo) {
-    return primeiro.size() > segundo.size();
+bool compareVectorCC(vector<int> first, vector<int> second) {
+    return first.size() > second.size();
 };
 
 int adjacencyVector::connectedComponents() {
@@ -202,7 +202,7 @@ int adjacencyVector::connectedComponents() {
     saida.open("Outputs/connectedComponents.txt");
     saida << "Número de componentes conexas: " << nodesCC.size() << "\n"
           << endl;
-    sort(nodesCC.begin(), nodesCC.end(), compareCC);
+    sort(nodesCC.begin(), nodesCC.end(), compareVectorCC);
     for (int i = 0; i < (int)nodesCC.size(); i++) {
         saida << "Tamanho da " << i + 1 << "ª Componente conexa: " << nodesCC[i].size() << endl;
         saida << "Vértices que a compõem:   ";

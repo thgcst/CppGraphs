@@ -8,6 +8,8 @@ using namespace std;
 
 int main() {
     adjacencyVector graph("Graphs/grafo_4.txt");
+    // adjacencyMatrix graph("Graphs/grafo_4.txt");
+
     clock_t start = clock();
     graph.connectedComponents();
     clock_t end = clock();
