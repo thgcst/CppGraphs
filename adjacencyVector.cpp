@@ -12,6 +12,7 @@ using namespace std;
 class adjacencyVector {
    private:
     int diameterBFS(int root, int biggestBfsLevel);
+    vector<int> bfsCC(int root, vector<int> &discovered, int constant);
 
    public:
     adjacencyVector(string file);
@@ -19,7 +20,6 @@ class adjacencyVector {
     vector<int> *adjVector;
     void bfs(int root);
     void dfs(int root);
-    vector<int> bfsCC(int root, vector<int> &discovered, int constant);
     int connectedComponents();
     int distanceBetween(int node1, int node2);
     int diameter();

@@ -14,6 +14,7 @@ using namespace std;
 class adjacencyMatrix {
    private:
     int diameterBFS(int root, int biggestBfsLevel);
+    vector<int> bfsCC(int root, vector<int> &discovered, int constant);
 
    public:
     adjacencyMatrix(string file);
@@ -21,7 +22,6 @@ class adjacencyMatrix {
     bool **adjMatrix;
     void bfs(int root);
     void dfs(int root);
-    vector<int> bfsCC(int root, vector<int> &discovered, int constant);
     int connectedComponents();
     int distanceBetween(int node1, int node2);
     int diameter();
