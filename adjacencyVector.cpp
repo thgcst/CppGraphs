@@ -16,6 +16,8 @@ class adjacencyVector {
     vector<int> *adjVector;
     void bfs(int root);
     void dfs(int root);
+    vector<int> bfsCC(int root, vector<int> &discovered, int constant);
+    int connectedComponents();
 };
 
 adjacencyVector::adjacencyVector(string file) {
@@ -151,4 +153,65 @@ void adjacencyVector::dfs(int root) {
         dfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
     }
     dfsFile.close();
+}
+
+vector<int> adjacencyVector::bfsCC(int root, vector<int> &discovered, int constant) {
+    vector<int> components;
+    components.push_back(root);
+
+    queue<int> queueBfsCC;
+
+    discovered[root] = constant;
+
+    queueBfsCC.push(root);
+
+    while (!queueBfsCC.empty()) {
+        int vertex = queueBfsCC.front();
+        queueBfsCC.pop();
+        for (int i = 0; i < (int)adjVector[vertex].size(); i++) {
+            int neighbor = i;
+            if (!discovered[adjVector[vertex][neighbor]]) {
+                discovered[adjVector[vertex][neighbor]] = constant;
+                components.push_back(adjVector[vertex][neighbor]);
+                queueBfsCC.push(adjVector[vertex][neighbor]);
+            }
+        }
+    }
+
+    return components;
+}
+
+bool compareCC(vector<int> primeiro, vector<int> segundo) {
+    return primeiro.size() > segundo.size();
+};
+
+int adjacencyVector::connectedComponents() {
+    vector<int> discovered(numNodes + 1, 0);
+
+    vector<vector<int> > nodesCC;
+
+    int constant = 0;
+    for (int i = 1; i < numNodes + 1; i++) {
+        if (!discovered[i]) {
+            constant++;
+            nodesCC.push_back(bfsCC(i, discovered, constant));
+        }
+    }
+
+    ofstream saida;
+    saida.open("Outputs/connectedComponents.txt");
+    saida << "Número de componentes conexas: " << nodesCC.size() << "\n"
+          << endl;
+    sort(nodesCC.begin(), nodesCC.end(), compareCC);
+    for (int i = 0; i < (int)nodesCC.size(); i++) {
+        saida << "Tamanho da " << i + 1 << "ª Componente conexa: " << nodesCC[i].size() << endl;
+        saida << "Vértices que a compõem:   ";
+        for (int j = 0; j < (int)nodesCC[i].size(); j++) {
+            saida << nodesCC[i][j] << " ";
+        }
+        saida << "\n"
+              << endl;
+    }
+
+    return constant;
 }

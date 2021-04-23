@@ -7,9 +7,9 @@
 using namespace std;
 
 int main() {
-    adjacencyMatrix graph("Graphs/grafo_3.txt");
+    adjacencyVector graph("Graphs/grafo_4.txt");
     clock_t start = clock();
-    graph.dfs(4);
+    graph.connectedComponents();
     clock_t end = clock();
     cout << (double)(end - start) / CLOCKS_PER_SEC << " segundos" << endl;
     return 0;
