@@ -17,6 +17,7 @@ class adjacencyMatrix {
     int numNodes;
     bool **adjMatrix;
     void bfs(int root);
+    void dfs(int root);
 };
 
 adjacencyMatrix::adjacencyMatrix(string file) {
@@ -110,4 +111,51 @@ void adjacencyMatrix::bfs(int root) {
         bfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
     }
     bfsFile.close();
+}
+
+void adjacencyMatrix::dfs(int root) {
+    int *level;
+    level = new int[numNodes + 1];
+    int *parent;
+    parent = new int[numNodes + 1];
+    bool *checked;
+    checked = new bool[numNodes + 1];
+
+    for (int i = 0; i < (int)numNodes + 1; i++) {
+        level[i] = -1;
+    };
+
+    memset(parent, 0, numNodes + 1);
+    memset(checked, 0, numNodes + 1);
+
+    stack<int> dfsStack;
+
+    dfsStack.push(root);
+    level[root] = 0;
+    parent[root] = -1;
+
+    while (!dfsStack.empty()) {
+        int u = dfsStack.top();
+        dfsStack.pop();
+        if (!checked[u]) {
+            checked[u] = true;
+            for (int i = (int)numNodes; i > 0; i--) {
+                if (adjMatrix[u][i] == 1) {
+                    if (!checked[i]) {
+                        level[i] = level[u] + 1;
+                        parent[i] = u;
+                    }
+                    dfsStack.push(i);
+                }
+            }
+        }
+    }
+
+    ofstream dfsFile;
+
+    dfsFile.open("Outputs/dfs.txt");
+    for (int i = 1; i < (int)numNodes + 1; i++) {
+        dfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+    }
+    dfsFile.close();
 }
