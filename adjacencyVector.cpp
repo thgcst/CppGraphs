@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <ctime>
+// #include <ctime>
 #include <fstream>
 #include <iostream>
 #include <numeric>
@@ -44,6 +44,10 @@ adjacencyVector::adjacencyVector(string file) {
 
     sort(degree, degree + numNodes + 1);
 
+    for (int i = 0; i < numNodes + 1; i++) {
+        sort(adjVector[i].begin(), adjVector[i].end());
+    }
+
     degreeSum = accumulate(degree, degree + numNodes + 1, 0);
 
     if (numNodes % 2 == 0) {
@@ -87,8 +91,8 @@ void adjacencyVector::bfs(int root) {
         bfsQueue.pop();
         for (int i = 0; i < (int)adjVector[v].size(); i++) {
             if (level[adjVector[v][i]] == -1) {
-                parent[adjVector[v][i]] = v;
                 level[adjVector[v][i]] = level[v] + 1;
+                parent[adjVector[v][i]] = v;
                 bfsQueue.push(adjVector[v][i]);
             }
         }
