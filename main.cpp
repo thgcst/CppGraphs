@@ -7,11 +7,11 @@
 using namespace std;
 
 int main() {
-    adjacencyVector graph("Graphs/grafo_4.txt");
+    adjacencyVector graph("Graphs/grafo_3.txt");
     // adjacencyMatrix graph("Graphs/grafo_4.txt");
 
     clock_t start = clock();
-    cout << graph.distanceBetween(10, 20) << endl;
+    cout << graph.diameter() << endl;
     clock_t end = clock();
     cout << (double)(end - start) / CLOCKS_PER_SEC << " segundos" << endl;
     return 0;
