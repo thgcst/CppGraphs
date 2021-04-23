@@ -12,6 +12,9 @@
 using namespace std;
 
 class adjacencyMatrix {
+   private:
+    int diameterBFS(int root, int biggestBfsLevel);
+
    public:
     adjacencyMatrix(string file);
     int numNodes;
@@ -21,6 +24,7 @@ class adjacencyMatrix {
     vector<int> bfsCC(int root, vector<int> &discovered, int constant);
     int connectedComponents();
     int distanceBetween(int node1, int node2);
+    int diameter();
 };
 
 adjacencyMatrix::adjacencyMatrix(string file) {
@@ -253,4 +257,47 @@ int adjacencyMatrix::distanceBetween(int node1, int node2) {
     };
 
     return -1;
+}
+
+int adjacencyMatrix::diameterBFS(int root, int biggestBfsLevel) {
+    int biggest = biggestBfsLevel;
+
+    int *level;
+    level = new int[numNodes + 1];
+
+    for (int i = 0; i < (int)numNodes + 1; i++) {
+        level[i] = -1;
+    };
+
+    queue<int> bfsQueue;
+
+    bfsQueue.push(root);
+
+    level[root] = 0;
+
+    while (!bfsQueue.empty()) {
+        int v = bfsQueue.front();
+        bfsQueue.pop();
+        for (int i = 1; i < numNodes + 1; i++) {
+            if (adjMatrix[v][i] && level[i] == -1) {
+                level[i] = level[v] + 1;
+                if (level[i] > biggest) {
+                    biggest = level[i];
+                }
+                bfsQueue.push(i);
+            }
+        }
+    };
+
+    return biggest;
+}
+
+int adjacencyMatrix::diameter() {
+    int biggestBfsLevel = 0;
+
+    for (int i = 1; i < numNodes + 1; i++) {
+        biggestBfsLevel = diameterBFS(i, biggestBfsLevel);
+    }
+
+    return biggestBfsLevel;
 }

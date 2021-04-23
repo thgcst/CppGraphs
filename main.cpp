@@ -7,8 +7,8 @@
 using namespace std;
 
 int main() {
-    adjacencyVector graph("Graphs/grafo_3.txt");
-    // adjacencyMatrix graph("Graphs/grafo_4.txt");
+    adjacencyVector graph("Graphs/grafo_2.txt");
+    // adjacencyMatrix graph("Graphs/grafo_2.txt");
 
     clock_t start = clock();
     cout << graph.diameter() << endl;
