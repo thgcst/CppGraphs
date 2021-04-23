@@ -20,6 +20,7 @@ class adjacencyMatrix {
     void dfs(int root);
     vector<int> bfsCC(int root, vector<int> &discovered, int constant);
     int connectedComponents();
+    int distanceBetween(int node1, int node2);
 };
 
 adjacencyMatrix::adjacencyMatrix(string file) {
@@ -98,7 +99,7 @@ void adjacencyMatrix::bfs(int root) {
         int v = bfsQueue.front();
         bfsQueue.pop();
         for (int i = 1; i < numNodes + 1; i++) {
-            if (adjMatrix[v][i] and level[i] == -1) {
+            if (adjMatrix[v][i] && level[i] == -1) {
                 parent[i] = v;
                 level[i] = level[v] + 1;
                 bfsQueue.push(i);
@@ -221,4 +222,35 @@ int adjacencyMatrix::connectedComponents() {
     }
 
     return constant;
+}
+
+int adjacencyMatrix::distanceBetween(int node1, int node2) {
+    int *level;
+    level = new int[numNodes + 1];
+
+    for (int i = 0; i < (int)numNodes + 1; i++) {
+        level[i] = -1;
+    };
+
+    queue<int> bfsQueue;
+
+    bfsQueue.push(node1);
+
+    level[node1] = 0;
+
+    while (!bfsQueue.empty()) {
+        int v = bfsQueue.front();
+        bfsQueue.pop();
+        for (int i = 1; i < numNodes + 1; i++) {
+            if (adjMatrix[v][i] && level[i] == -1) {
+                level[i] = level[v] + 1;
+                if (i == node2) {
+                    return level[i];
+                }
+                bfsQueue.push(i);
+            }
+        }
+    };
+
+    return -1;
 }
