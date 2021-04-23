@@ -18,6 +18,7 @@ class adjacencyVector {
     void dfs(int root);
     vector<int> bfsCC(int root, vector<int> &discovered, int constant);
     int connectedComponents();
+    int distanceBetween(int node1, int node2);
 };
 
 adjacencyVector::adjacencyVector(string file) {
@@ -214,4 +215,34 @@ int adjacencyVector::connectedComponents() {
     }
 
     return constant;
+}
+
+int adjacencyVector::distanceBetween(int node1, int node2) {
+    int *level;
+    level = new int[numNodes + 1];
+
+    for (int i = 0; i < (int)numNodes + 1; i++) {
+        level[i] = -1;
+    };
+
+    queue<int> bfsQueue;
+
+    bfsQueue.push(node1);
+
+    level[node1] = 0;
+    while (!bfsQueue.empty()) {
+        int v = bfsQueue.front();
+        bfsQueue.pop();
+        for (int i = 0; i < (int)adjVector[v].size(); i++) {
+            if (level[adjVector[v][i]] == -1) {
+                level[adjVector[v][i]] = level[v] + 1;
+                if (adjVector[v][i] == node2) {
+                    return level[adjVector[v][i]];
+                }
+                bfsQueue.push(adjVector[v][i]);
+            }
+        }
+    };
+
+    return -1;
 }

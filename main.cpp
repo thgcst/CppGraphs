@@ -11,7 +11,7 @@ int main() {
     // adjacencyMatrix graph("Graphs/grafo_4.txt");
 
     clock_t start = clock();
-    graph.connectedComponents();
+    cout << graph.distanceBetween(10, 20) << endl;
     clock_t end = clock();
     cout << (double)(end - start) / CLOCKS_PER_SEC << " segundos" << endl;
     return 0;
