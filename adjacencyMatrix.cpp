@@ -1,10 +1,12 @@
 #include <string.h>
 
 #include <algorithm>
-#include <ctime>
+// #include <ctime>
 #include <fstream>
 #include <iostream>
 #include <numeric>
+#include <queue>
+#include <stack>
 #include <vector>
 
 using namespace std;
@@ -14,6 +16,7 @@ class adjacencyMatrix {
     adjacencyMatrix(string file);
     int numNodes;
     bool **adjMatrix;
+    void bfs(int root);
 };
 
 adjacencyMatrix::adjacencyMatrix(string file) {
@@ -68,3 +71,43 @@ adjacencyMatrix::adjacencyMatrix(string file) {
     graphSummary << "Degree median: " << median << endl;
     graphSummary.close();
 };
+
+void adjacencyMatrix::bfs(int root) {
+    int *level;
+    level = new int[numNodes + 1];
+    int *parent;
+    parent = new int[numNodes + 1];
+
+    for (int i = 0; i < (int)numNodes + 1; i++) {
+        level[i] = -1;
+    };
+
+    memset(parent, 0, numNodes + 1);
+
+    queue<int> bfsQueue;
+
+    bfsQueue.push(root);
+
+    level[root] = 0;
+    parent[root] = -1;
+
+    while (!bfsQueue.empty()) {
+        int v = bfsQueue.front();
+        bfsQueue.pop();
+        for (int i = 1; i < numNodes + 1; i++) {
+            if (adjMatrix[v][i] and level[i] == -1) {
+                parent[i] = v;
+                level[i] = level[v] + 1;
+                bfsQueue.push(i);
+            }
+        }
+    };
+
+    ofstream bfsFile;
+
+    bfsFile.open("Outputs/bfs.txt");
+    for (int i = 1; i < (int)numNodes; i++) {
+        bfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+    }
+    bfsFile.close();
+}
