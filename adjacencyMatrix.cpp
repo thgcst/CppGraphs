@@ -20,8 +20,8 @@ class adjacencyMatrix {
     adjacencyMatrix(string file);
     int numNodes;
     bool **adjMatrix;
-    void bfs(int root);
-    void dfs(int root);
+    void bfs(int root, bool save);
+    void dfs(int root, bool save);
     int connectedComponents();
     int distanceBetween(int node1, int node2);
     int diameter();
@@ -80,7 +80,7 @@ adjacencyMatrix::adjacencyMatrix(string file) {
     graphSummary.close();
 };
 
-void adjacencyMatrix::bfs(int root) {
+void adjacencyMatrix::bfs(int root, bool save) {
     int *level;
     level = new int[numNodes + 1];
     int *parent;
@@ -111,16 +111,18 @@ void adjacencyMatrix::bfs(int root) {
         }
     };
 
-    ofstream bfsFile;
+    if (save) {
+        ofstream bfsFile;
 
-    bfsFile.open("Outputs/bfs.txt");
-    for (int i = 1; i < (int)numNodes; i++) {
-        bfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+        bfsFile.open("Outputs/bfs.txt");
+        for (int i = 1; i < (int)numNodes; i++) {
+            bfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+        }
+        bfsFile.close();
     }
-    bfsFile.close();
 }
 
-void adjacencyMatrix::dfs(int root) {
+void adjacencyMatrix::dfs(int root, bool save) {
     int *level;
     level = new int[numNodes + 1];
     int *parent;
@@ -158,13 +160,15 @@ void adjacencyMatrix::dfs(int root) {
         }
     }
 
-    ofstream dfsFile;
+    if (save) {
+        ofstream dfsFile;
 
-    dfsFile.open("Outputs/dfs.txt");
-    for (int i = 1; i < (int)numNodes + 1; i++) {
-        dfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+        dfsFile.open("Outputs/dfs.txt");
+        for (int i = 1; i < (int)numNodes + 1; i++) {
+            dfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+        }
+        dfsFile.close();
     }
-    dfsFile.close();
 }
 
 vector<int> adjacencyMatrix::bfsCC(int root, vector<int> &discovered, int constant) {

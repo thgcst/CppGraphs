@@ -18,8 +18,8 @@ class adjacencyVector {
     adjacencyVector(string file);
     int numNodes;
     vector<int> *adjVector;
-    void bfs(int root);
-    void dfs(int root);
+    void bfs(int root, bool save);
+    void dfs(int root, bool save);
     int connectedComponents();
     int distanceBetween(int node1, int node2);
     int diameter();
@@ -75,7 +75,7 @@ adjacencyVector::adjacencyVector(string file) {
     graphSummary.close();
 };
 
-void adjacencyVector::bfs(int root) {
+void adjacencyVector::bfs(int root, bool save) {
     int *level;
     level = new int[numNodes + 1];
     int *parent;
@@ -106,16 +106,18 @@ void adjacencyVector::bfs(int root) {
         }
     };
 
-    ofstream bfsFile;
+    if (save) {
+        ofstream bfsFile;
 
-    bfsFile.open("Outputs/bfs.txt");
-    for (int i = 1; i < (int)numNodes + 1; i++) {
-        bfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+        bfsFile.open("Outputs/bfs.txt");
+        for (int i = 1; i < (int)numNodes + 1; i++) {
+            bfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+        }
+        bfsFile.close();
     }
-    bfsFile.close();
 }
 
-void adjacencyVector::dfs(int root) {
+void adjacencyVector::dfs(int root, bool save) {
     int *level;
     level = new int[numNodes + 1];
     int *parent;
@@ -151,13 +153,15 @@ void adjacencyVector::dfs(int root) {
         }
     }
 
-    ofstream dfsFile;
+    if (save) {
+        ofstream dfsFile;
 
-    dfsFile.open("Outputs/dfs.txt");
-    for (int i = 1; i < (int)numNodes + 1; i++) {
-        dfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+        dfsFile.open("Outputs/dfs.txt");
+        for (int i = 1; i < (int)numNodes + 1; i++) {
+            dfsFile << "Vértice: " << i << ", Nível: " << level[i] << ", Pai: " << parent[i] << endl;
+        }
+        dfsFile.close();
     }
-    dfsFile.close();
 }
 
 vector<int> adjacencyVector::bfsCC(int root, vector<int> &discovered, int constant) {
