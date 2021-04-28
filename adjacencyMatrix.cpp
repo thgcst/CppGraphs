@@ -103,10 +103,12 @@ void adjacencyMatrix::bfs(int root, bool save) {
         int v = bfsQueue.front();
         bfsQueue.pop();
         for (int i = 1; i < numNodes + 1; i++) {
-            if (adjMatrix[v][i] && level[i] == -1) {
-                parent[i] = v;
-                level[i] = level[v] + 1;
-                bfsQueue.push(i);
+            if (adjMatrix[v][i]) {
+                if (level[i] == -1) {
+                    parent[i] = v;
+                    level[i] = level[v] + 1;
+                    bfsQueue.push(i);
+                }
             }
         }
     };
