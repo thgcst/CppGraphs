@@ -3,16 +3,16 @@
 
 #include "adjacencyMatrix.cpp"
 #include "adjacencyVector.cpp"
+#include "weightedMatrix.cpp"
+#include "weightedVector.cpp"
 
 using namespace std;
 
 int main() {
-    adjacencyVector graph("Graphs/grafo_4.txt");
-    // adjacencyMatrix graph("Graphs/grafo_3.txt");
-
+    weightedMatrix graph("Graphs/grafo_W_1.txt");
     clock_t start = clock();
 
-    cout << graph.diameter() << endl;
+    graph.shortestPath(1, true, 1000);
 
     clock_t end = clock();
     cout << (double)(end - start) / CLOCKS_PER_SEC << " segundos" << endl;
