@@ -9,7 +9,7 @@
 using namespace std;
 
 int main() {
-    weightedMatrix graph("Graphs/grafo_W_1.txt");
+    weightedVector graph("Graphs/grafo_W_3.txt");
     clock_t start = clock();
 
     graph.shortestPath(1, true, 1000);
