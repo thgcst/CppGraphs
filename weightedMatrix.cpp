@@ -96,13 +96,13 @@ void weightedMatrix::shortestPath(int node1, bool save = true, int node2 = -1) {
             hasNegativeWeight = true;
             break;
         }
-        int current_vertex = toBeVisited.begin()->second;
-        toBeVisited.erase(make_pair(current_distance, current_vertex));
+        int current_node = toBeVisited.begin()->second;
+        toBeVisited.erase(make_pair(current_distance, current_node));
         for (int i = 1; i < numNodes + 1; i++) {
-            if (adjMatrix[current_vertex][i] > 0) {
-                if (distance[i] > distance[current_vertex] + adjMatrix[current_vertex][i]) {
-                    parent[i] = current_vertex;
-                    distance[i] = distance[current_vertex] + adjMatrix[current_vertex][i];
+            if (adjMatrix[current_node][i] > 0) {
+                if (distance[i] > distance[current_node] + adjMatrix[current_node][i]) {
+                    parent[i] = current_node;
+                    distance[i] = distance[current_node] + adjMatrix[current_node][i];
                     toBeVisited.insert(make_pair(distance[i], i));
                 }
             }
@@ -176,16 +176,16 @@ double weightedMatrix::MST(int start, bool save = true) {
 
     while (!toBeVisited.empty()) {
         double current_cost = toBeVisited.begin()->first;
-        int current_vertex = toBeVisited.begin()->second;
-        visited[current_vertex] = true;
-        toBeVisited.erase(make_pair(current_cost, current_vertex));
+        int current_node = toBeVisited.begin()->second;
+        visited[current_node] = true;
+        toBeVisited.erase(make_pair(current_cost, current_node));
 
         for (int i = 1; i < numNodes + 1; i++) {
-            if (adjMatrix[current_vertex][i] != INF) {
-                if (cost[i] > adjMatrix[current_vertex][i] && !visited[i]) {
-                    cost[i] = adjMatrix[current_vertex][i];
+            if (adjMatrix[current_node][i] != INF) {
+                if (cost[i] > adjMatrix[current_node][i] && !visited[i]) {
+                    cost[i] = adjMatrix[current_node][i];
                     toBeVisited.insert(make_pair(cost[i], i));
-                    parent[i] = current_vertex;
+                    parent[i] = current_node;
                 }
             }
         }
@@ -223,12 +223,12 @@ double weightedMatrix::eccentricity(int start) {
             cout << "Para executar dijkstra todos os pesos devem ser maiores que 0" << endl;
             break;
         }
-        int current_vertex = toBeVisited.begin()->second;
-        toBeVisited.erase(make_pair(current_distance, current_vertex));
+        int current_node = toBeVisited.begin()->second;
+        toBeVisited.erase(make_pair(current_distance, current_node));
         for (int i = 1; i < numNodes + 1; i++) {
-            if (adjMatrix[current_vertex][i] > 0) {
-                if (distance[i] > distance[current_vertex] + adjMatrix[current_vertex][i]) {
-                    distance[i] = distance[current_vertex] + adjMatrix[current_vertex][i];
+            if (adjMatrix[current_node][i] > 0) {
+                if (distance[i] > distance[current_node] + adjMatrix[current_node][i]) {
+                    distance[i] = distance[current_node] + adjMatrix[current_node][i];
                     toBeVisited.insert(make_pair(distance[i], i));
                 }
             }

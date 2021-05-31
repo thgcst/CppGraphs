@@ -12,7 +12,7 @@ int main() {
     weightedVector graph("Graphs/grafo_W_3.txt");
     clock_t start = clock();
 
-    graph.shortestPath(1, true, 1000);
+    graph.MST(1, true);
 
     clock_t end = clock();
     cout << (double)(end - start) / CLOCKS_PER_SEC << " segundos" << endl;

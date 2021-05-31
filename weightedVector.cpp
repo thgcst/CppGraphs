@@ -19,6 +19,7 @@ class weightedVector {
     int numNodes;
     vector<pair<int, double> >* adjVector;
     void shortestPath(int node1, bool save, int node2);
+    double MST(int start, bool save);
 };
 
 weightedVector::weightedVector(string file) {
@@ -85,15 +86,15 @@ void weightedVector::shortestPath(int node1, bool save = true, int node2 = -1) {
             hasNegativeWeight = true;
             break;
         }
-        int current_vertex = toBeVisited.begin()->second;
-        toBeVisited.erase(make_pair(current_distance, current_vertex));
-        for (vector<pair<int, double> >::iterator it = adjVector[current_vertex].begin(); it != adjVector[current_vertex].end(); ++it) {
+        int current_node = toBeVisited.begin()->second;
+        toBeVisited.erase(make_pair(current_distance, current_node));
+        for (vector<pair<int, double> >::iterator it = adjVector[current_node].begin(); it != adjVector[current_node].end(); ++it) {
             int neighbor = it->first;
             double weight = it->second;
 
-            if (distance[neighbor] > distance[current_vertex] + weight) {
-                parent[neighbor] = current_vertex;
-                distance[neighbor] = distance[current_vertex] + weight;
+            if (distance[neighbor] > distance[current_node] + weight) {
+                parent[neighbor] = current_node;
+                distance[neighbor] = distance[current_node] + weight;
                 toBeVisited.insert(make_pair(distance[neighbor], neighbor));
             }
         }
@@ -152,4 +153,53 @@ void weightedVector::shortestPath(int node1, bool save = true, int node2 = -1) {
         }
         shortestPath.close();
     }
+}
+
+double weightedVector::MST(int start, bool save) {
+    vector<double> cost(numNodes + 1, INF);
+    cost[start] = 0;
+    vector<int> parent(numNodes + 1, -1);
+    vector<bool> visited(numNodes + 1, false);
+    set<pair<double, int> > toBeVisited;
+
+    toBeVisited.insert(make_pair(cost[start], start));
+    parent[start] = 0;
+
+    while (!toBeVisited.empty()) {
+        double current_cost = toBeVisited.begin()->first;
+        int current_node = toBeVisited.begin()->second;
+
+        visited[current_node] = true;
+        toBeVisited.erase(make_pair(current_cost, current_node));
+
+        for (vector<pair<int, double> >::iterator it = adjVector[current_node].begin(); it != adjVector[current_node].end(); ++it) {
+            int neighbor = it->first;
+            double weight = it->second;
+            if (cost[neighbor] > weight && !visited[neighbor]) {
+                cost[neighbor] = weight;
+                parent[neighbor] = current_node;
+                toBeVisited.insert(make_pair(cost[neighbor], neighbor));
+            }
+        }
+    }
+
+    double total_cost = 0;
+    for (int i = 1; i <= numNodes; i++) {
+        if (cost[i] != INF) {
+            total_cost += cost[i];
+        }
+    }
+    if (save) {
+        ofstream MST;
+        MST.open("Outputs/MST.txt");
+        MST.precision(15);
+        MST << "total cost: " << total_cost << endl;
+        for (int i = 1; i < numNodes + 1; i++) {
+            if (parent[i] != 0) {
+                MST << i << " " << parent[i] << " " << cost[i] << endl;
+            }
+        }
+        MST.close();
+    }
+    return total_cost;
 }
