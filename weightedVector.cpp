@@ -20,6 +20,7 @@ class weightedVector {
     vector<pair<int, double> >* adjVector;
     void shortestPath(int node1, bool save, int node2);
     double MST(int start, bool save);
+    double eccentricity(int start);
 };
 
 weightedVector::weightedVector(string file) {
@@ -202,4 +203,44 @@ double weightedVector::MST(int start, bool save) {
         MST.close();
     }
     return total_cost;
+}
+
+double weightedVector::eccentricity(int start) {
+    bool hasNegativeWeight = false;
+    vector<double> distance(numNodes + 1, INF);
+    int* parent;
+    parent = new int[numNodes + 1];
+    memset(parent, 0, numNodes + 1);
+    distance[start] = 0;
+    parent[start] = -1;
+    set<pair<double, int> > toBeVisited;  // nodes to be visited
+    toBeVisited.insert(make_pair(distance[start], start));
+    while (!toBeVisited.empty()) {
+        double current_distance = toBeVisited.begin()->first;
+        if (current_distance < 0) {
+            cout << "Para executar dijkstra todos os pesos devem ser maiores que 0" << endl;
+            hasNegativeWeight = true;
+            break;
+        }
+        int current_node = toBeVisited.begin()->second;
+        toBeVisited.erase(make_pair(current_distance, current_node));
+        for (vector<pair<int, double> >::iterator it = adjVector[current_node].begin(); it != adjVector[current_node].end(); ++it) {
+            int neighbor = it->first;
+            double weight = it->second;
+
+            if (distance[neighbor] > distance[current_node] + weight) {
+                parent[neighbor] = current_node;
+                distance[neighbor] = distance[current_node] + weight;
+                toBeVisited.insert(make_pair(distance[neighbor], neighbor));
+            }
+        }
+    }
+
+    double max = 0;
+    for (int i = 1; i < numNodes + 1; i++) {
+        if (distance[i] > max && distance[i] != INF) {
+            max = distance[i];
+        }
+    }
+    return max;
 }

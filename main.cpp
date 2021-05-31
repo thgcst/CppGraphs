@@ -12,7 +12,7 @@ int main() {
     weightedVector graph("Graphs/grafo_W_3.txt");
     clock_t start = clock();
 
-    graph.MST(1, true);
+    cout << graph.eccentricity(1) << endl;
 
     clock_t end = clock();
     cout << (double)(end - start) / CLOCKS_PER_SEC << " segundos" << endl;
