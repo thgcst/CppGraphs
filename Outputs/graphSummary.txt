@@ -1,0 +1,6 @@
+Number of nodes: 722385
+Number of edges: 244128
+Minimum degree: 0
+Maximum degree: 377
+Degree average: 0.675894
+Degree median: 0

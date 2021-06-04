@@ -7,8 +7,8 @@
 # Unignore all dirs
 !*/
 
-Outputs/*
-!Outputs/.gitkeep
+#Outputs/*
+#!Outputs/.gitkeep
 
 Graphs/*
 !Graphs/.gitkeep
